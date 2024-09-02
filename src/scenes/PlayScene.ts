@@ -1,8 +1,9 @@
-import { Player, Canvas } from "./types";
+import { Player, Canvas, Trigger } from "./types";
 
 class PlayScene extends Phaser.Scene {
   private player: Player;
   private canvas: Canvas;
+  private startTrigger: Trigger;
 
   constructor() {
     super("PlayScene");
@@ -13,10 +14,16 @@ class PlayScene extends Phaser.Scene {
       height: +this.game.config.height,
       width: +this.game.config.width,
     };
+    this.startTrigger;
 
     this.createTerrain();
     this.createPlayer();
     this.registerControls();
+
+    //checking for collisions
+    this.physics.add.overlap(this.startTrigger, this.player, () => {
+      console.log("Collision detected.");
+    });
   }
 
   createPlayer() {
@@ -28,6 +35,12 @@ class PlayScene extends Phaser.Scene {
       .setGravityY(5000)
       .setCollideWorldBounds(true)
       .setBodySize(44, 92);
+
+    //making an empty sprite for start detection
+    this.startTrigger = this.physics.add
+      .sprite(0, 10, null)
+      .setOrigin(0, 1)
+      .setAlpha(0);
   }
 
   createTerrain() {
@@ -43,7 +56,7 @@ class PlayScene extends Phaser.Scene {
     );
 
     spaceBar.on("down", () => {
-      this.player.setVelocityY(-1500);
+      this.player.setVelocityY(-1600);
     });
   }
 }
