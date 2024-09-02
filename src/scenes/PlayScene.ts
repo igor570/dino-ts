@@ -19,7 +19,7 @@ class PlayScene extends Phaser.Scene {
 
     this.createTerrain();
     this.createPlayer();
-    this.registerControls();
+    this.createTriggers();
 
     //checking for collisions
     this.physics.add.overlap(this.startTrigger, this.player, () => {
@@ -29,12 +29,6 @@ class PlayScene extends Phaser.Scene {
 
   createPlayer() {
     this.player = new Player(this, 0, this.canvas.height);
-
-    //making an empty sprite for start detection
-    this.startTrigger = this.physics.add
-      .sprite(0, 10, null)
-      .setOrigin(0, 1)
-      .setAlpha(0);
   }
 
   createTerrain() {
@@ -44,14 +38,12 @@ class PlayScene extends Phaser.Scene {
       .setOrigin(0, 1);
   }
 
-  registerControls() {
-    const spaceBar = this.input.keyboard.addKey(
-      Phaser.Input.Keyboard.KeyCodes.SPACE
-    );
-
-    spaceBar.on("down", () => {
-      this.player.setVelocityY(-1600);
-    });
+  createTriggers() {
+    //making an empty sprite for start detection
+    this.startTrigger = this.physics.add
+      .sprite(0, 10, null)
+      .setOrigin(0, 1)
+      .setAlpha(0);
   }
 }
 
