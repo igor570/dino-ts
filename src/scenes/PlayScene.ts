@@ -1,4 +1,5 @@
-import { Player, Canvas, Trigger } from "./types";
+import { Canvas, Trigger } from "./types";
+import { Player } from "../entities/Player";
 
 class PlayScene extends Phaser.Scene {
   private player: Player;
@@ -27,14 +28,7 @@ class PlayScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    this.player = this.physics.add
-      .sprite(0, this.canvas.height, "dino-idle")
-      .setOrigin(0, 1);
-
-    this.player
-      .setGravityY(5000)
-      .setCollideWorldBounds(true)
-      .setBodySize(44, 92);
+    this.player = new Player(this, 0, this.canvas.height);
 
     //making an empty sprite for start detection
     this.startTrigger = this.physics.add
