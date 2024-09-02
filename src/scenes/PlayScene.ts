@@ -1,6 +1,12 @@
 import { Canvas, Terrain, Trigger } from "./types";
 import { Player } from "../entities/Player";
 
+enum playState {
+  ROLLOUT = 0,
+  PLAYING = 1,
+  END = 2,
+}
+
 class PlayScene extends Phaser.Scene {
   private player: Player;
   private terrain: Terrain;
@@ -23,12 +29,7 @@ class PlayScene extends Phaser.Scene {
     this.createCollisionTriggers();
   }
 
-  update() {
-    if (this.beginRollOut && this.terrain.width <= this.canvas.width) {
-      console.log("increasing terrain width...");
-      this.terrain.width += 5;
-    }
-  }
+  update() {}
 
   //custom methods
   createPlayer() {
@@ -57,7 +58,26 @@ class PlayScene extends Phaser.Scene {
         return;
       }
 
+      //destroy trigger sprite
       this.startTrigger.destroy();
+
+      //start the grounds rollout
+      this.beginRollOut = true;
+
+      const rollOutEvent = this.time.addEvent({
+        delay: 1000 / 60, // 60 time a sec
+        loop: true,
+        callback: () => {
+          this.player.setVelocityX(80);
+          this.terrain.width += 15;
+
+          if (this.terrain.width >= this.canvas.width) {
+            rollOutEvent.remove(); //cleanup
+            this.terrain.width = this.canvas.width; //normalizing widths
+            this.player.setVelocityX(0);
+          }
+        },
+      });
       this.beginRollOut = true;
     });
   }
