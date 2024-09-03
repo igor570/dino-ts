@@ -1,12 +1,6 @@
 import { Canvas, Terrain, Trigger } from "./types";
 import { Player } from "../entities/Player";
 
-enum playState {
-  ROLLOUT = 0,
-  PLAYING = 1,
-  END = 2,
-}
-
 class PlayScene extends Phaser.Scene {
   private player: Player;
   private terrain: Terrain;
